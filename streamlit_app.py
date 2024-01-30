@@ -211,7 +211,16 @@ def main():
 
 
         st.subheader("Data with Anomalies")
-        final_data = pd.concat([copy_data, data_with_anomalies[['Anomaly', 'PointColor']].copy()], axis=1)
+        # Debugging statements
+        st.write("Columns in data_with_anomalies:", data_with_anomalies.columns)
+        subset_columns = ['Anomaly', 'PointColor']
+        st.write(f"Subset of columns to be selected: {subset_columns}")
+        st.write(f"Columns available in data_with_anomalies: {data_with_anomalies.columns}")
+        st.write(f"Columns present in subset: {[col for col in subset_columns if col in data_with_anomalies.columns]}")
+
+        # Concatenation
+        final_data = pd.concat([copy_data, data_with_anomalies[subset_columns].copy()], axis=1)
+
         st.write(final_data.head(5))
 
         st.subheader("Visualize anomalies")
