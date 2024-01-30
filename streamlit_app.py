@@ -211,7 +211,7 @@ def main():
 
 
         st.subheader("Data with Anomalies")
-        final_data = pd.concat([copy_data, data_with_anomalies[['Anomaly', 'PointColor']]], axis=1)
+        final_data = pd.concat([copy_data, data_with_anomalies[['Anomaly', 'PointColor']].copy()], axis=1)
         st.write(final_data.head(5))
 
         st.subheader("Visualize anomalies")
