@@ -328,12 +328,12 @@ def main():
 
 
 
-            st.download_button(
-                label=f"Download Plot ({selected_anomalyAlgorithm} - HTML)",
-                data=plotly.offline.plot(fig, include_plotlyjs=True, output_type='div'),
-                file_name=f"{selected_anomalyAlgorithm}Anomaly.html",
-                mime="text/html"
-            )
+            #st.download_button(
+            #    label=f"Download Plot ({selected_anomalyAlgorithm} - HTML)",
+            #    data=plotly.offline.plot(fig, include_plotlyjs=True, output_type='div'),
+            #    file_name=f"{selected_anomalyAlgorithm}Anomaly.html",
+            #    mime="text/html"
+           # )
 
 
         # ... (other options for visualization)
