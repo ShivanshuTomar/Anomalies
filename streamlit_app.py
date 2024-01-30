@@ -12,6 +12,9 @@ import statsmodels.api as sm
 import plotly.express as px
 import matplotlib.pyplot as plt
 
+# Increase the file size limit to 1GB
+st.set_option('client.file_uploader.max_upload_size', 1000)
+
 def drop_features_with_missing_values(data):
     threshold = 0.1
     missing_percentages = data.isnull().mean()
@@ -113,8 +116,10 @@ def main():
         elif selected_anomalyAlgorithm == "Gaussian Mixture":
             data_with_anomalies = apply_anomaly_detection_GaussianMixture(data)
 
-        data_with_anomalies['PointColor'] = 'Inlier'
-        data_with_anomalies.loc[data_with_anomalies['Anomaly'] == -1, 'PointColor'] = 'Outlier'
+        original_data_with_anomalies = pd.concat([copy_data, anomalies.rename('Anomaly')], axis=1)
+        original_data_with_anomalies['PointColor'] = 'Inlier'
+        original_data_with_anomalies.loc[original_data_with_anomalies['Anomaly'] == 1, 'PointColor'] = 'Outlier'
+
 
         st.subheader("Data with Anomalies")
         final_data = pd.concat([copy_data, data_with_anomalies[['Anomaly', 'PointColor']]], axis=1)
