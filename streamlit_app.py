@@ -83,26 +83,42 @@ def perform_hyperparameter_tuning_GaussianMixture(data):
     return best_params, best_estimator
 
 def apply_anomaly_detection_IsolationForest(data, best_model):
-    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
+    if 'Anomaly' in data.columns:
+        data_without_anomaly = data.drop(columns=['Anomaly'])
+    else:
+        data_without_anomaly = data.copy()
+    data['Anomaly'] = best_model.fit_predict(data_without_anomaly)
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
 
 
 def apply_anomaly_detection_EllipticEnvelope(data, best_model):
-    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
+    if 'Anomaly' in data.columns:
+        data_without_anomaly = data.drop(columns=['Anomaly'])
+    else:
+        data_without_anomaly = data.copy()
+    data['Anomaly'] = best_model.fit_predict(data_without_anomaly)
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
 
 def apply_anomaly_detection_LocalOutlierFactor(data, best_model):
-    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
+    if 'Anomaly' in data.columns:
+        data_without_anomaly = data.drop(columns=['Anomaly'])
+    else:
+        data_without_anomaly = data.copy()
+    data['Anomaly'] = best_model.fit_predict(data_without_anomaly)
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
 
 def apply_anomaly_detection_GaussianMixture(data, best_model):
-    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
+    if 'Anomaly' in data.columns:
+        data_without_anomaly = data.drop(columns=['Anomaly'])
+    else:
+        data_without_anomaly = data.copy()
+    data['Anomaly'] = best_model.fit_predict(data_without_anomaly)
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
