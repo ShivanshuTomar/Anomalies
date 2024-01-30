@@ -29,12 +29,12 @@ def perform_hyperparameter_tuning_IsolationForest(data):
 
     isolation_forest = IsolationForest()
     grid_search = GridSearchCV(isolation_forest, parameters, scoring='accuracy', cv=5)
-    grid_search.fit(data.drop(columns=['Anomaly']))
+    grid_search.fit(data)
 
     best_params = grid_search.best_params_
-    st.write(f"Best Hyperparameters for Isolation Forest: {best_params}")
+    best_estimator = grid_search.best_estimator_
 
-    return grid_search.best_estimator_
+    return best_params, best_estimator
 
 def perform_hyperparameter_tuning_EllipticEnvelope(data):
     parameters = {
@@ -44,12 +44,12 @@ def perform_hyperparameter_tuning_EllipticEnvelope(data):
 
     elliptic_envelope = EllipticEnvelope()
     grid_search = GridSearchCV(elliptic_envelope, parameters, scoring='accuracy', cv=5)
-    grid_search.fit(data.drop(columns=['Anomaly']))
+    grid_search.fit(data)
 
     best_params = grid_search.best_params_
-    st.write(f"Best Hyperparameters for Elliptic Envelope: {best_params}")
+    best_estimator = grid_search.best_estimator_
 
-    return grid_search.best_estimator_
+    return best_params, best_estimator
 
 def perform_hyperparameter_tuning_LocalOutlierFactor(data):
     parameters = {
@@ -59,12 +59,13 @@ def perform_hyperparameter_tuning_LocalOutlierFactor(data):
 
     local_outlier_factor = LocalOutlierFactor()
     grid_search = GridSearchCV(local_outlier_factor, parameters, scoring='accuracy', cv=5)
-    grid_search.fit(data.drop(columns=['Anomaly']))
-
+    grid_search.fit(data)
+    
     best_params = grid_search.best_params_
-    st.write(f"Best Hyperparameters for Local Outlier Factor: {best_params}")
+    best_estimator = grid_search.best_estimator_
 
-    return grid_search.best_estimator_
+    return best_params, best_estimator
+
 
 def perform_hyperparameter_tuning_GaussianMixture(data):
     parameters = {
@@ -74,12 +75,12 @@ def perform_hyperparameter_tuning_GaussianMixture(data):
 
     gaussian_mixture = GaussianMixture()
     grid_search = GridSearchCV(gaussian_mixture, parameters, scoring='accuracy', cv=5)
-    grid_search.fit(data.drop(columns=['Anomaly']))
+    grid_search.fit(data)
 
     best_params = grid_search.best_params_
-    st.write(f"Best Hyperparameters for Gaussian Mixture: {best_params}")
+    best_estimator = grid_search.best_estimator_
 
-    return grid_search.best_estimator_
+    return best_params, best_estimator
 
 def apply_anomaly_detection_IsolationForest(data):
     isolation_forest = IsolationForest(contamination=0.05)
@@ -165,28 +166,33 @@ def main():
         st.write(data.head())
         st.write(data.shape)
 
+        # Performing hyperparameter tuning...
         st.write("Performing hyperparameter tuning...")
 
         if selected_anomalyAlgorithm == "Isolation Forest":
-            best_model = perform_hyperparameter_tuning_IsolationForest(data)
+            best_params, best_model = perform_hyperparameter_tuning_IsolationForest(data)
         elif selected_anomalyAlgorithm == "Elliptic Envelope":
-            best_model = perform_hyperparameter_tuning_EllipticEnvelope(data)
+            best_params, best_model = perform_hyperparameter_tuning_EllipticEnvelope(data)
         elif selected_anomalyAlgorithm == "Local Outlier Factor":
-            best_model = perform_hyperparameter_tuning_LocalOutlierFactor(data)
+            best_params, best_model = perform_hyperparameter_tuning_LocalOutlierFactor(data)
         elif selected_anomalyAlgorithm == "Gaussian Mixture":
-            best_model = perform_hyperparameter_tuning_GaussianMixture(data)
+            best_params, best_model = perform_hyperparameter_tuning_GaussianMixture(data)
+
+        # Displaying the best hyperparameters
+        st.write(f"Best Hyperparameters for {selected_anomalyAlgorithm}: {best_params}")
 
         # Applying the selected anomaly detection algorithm
         if selected_anomalyAlgorithm == "Isolation Forest":
-            data_with_anomalies = apply_anomaly_detection_IsolationForest(data,best_model)
+            data_with_anomalies = apply_anomaly_detection_IsolationForest(data, best_model)
         elif selected_anomalyAlgorithm == "Elliptic Envelope":
-            data_with_anomalies = apply_anomaly_detection_EllipticEnvelope(data,best_model)
+            data_with_anomalies = apply_anomaly_detection_EllipticEnvelope(data, best_model)
         elif selected_anomalyAlgorithm == "Local Outlier Factor":
-            data_with_anomalies = apply_anomaly_detection_LocalOutlierFactor(data,best_model)
+            data_with_anomalies = apply_anomaly_detection_LocalOutlierFactor(data, best_model)
         elif selected_anomalyAlgorithm == "Gaussian Mixture":
-            data_with_anomalies = apply_anomaly_detection_GaussianMixture(data,best_model)
+            data_with_anomalies = apply_anomaly_detection_GaussianMixture(data, best_model)
 
-        original_data_with_anomalies = pd.concat([copy_data, anomalies.rename('Anomaly')], axis=1)
+
+        original_data_with_anomalies = pd.concat([copy_data, data_with_anomalies.rename('Anomaly')], axis=1)
         original_data_with_anomalies['PointColor'] = 'Inlier'
         original_data_with_anomalies.loc[original_data_with_anomalies['Anomaly'] == 1, 'PointColor'] = 'Outlier'
 
