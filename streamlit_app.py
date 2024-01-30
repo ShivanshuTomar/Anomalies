@@ -82,30 +82,27 @@ def perform_hyperparameter_tuning_GaussianMixture(data):
 
     return best_params, best_estimator
 
-def apply_anomaly_detection_IsolationForest(data):
-    isolation_forest = IsolationForest(contamination=0.05)
-    data['Anomaly'] = isolation_forest.fit_predict(data.drop(columns=['Anomaly']))
+def apply_anomaly_detection_IsolationForest(data, best_model):
+    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
 
-def apply_anomaly_detection_EllipticEnvelope(data):
-    elliptic_envelope = EllipticEnvelope(contamination=0.05)
-    data['Anomaly'] = elliptic_envelope.fit_predict(data.drop(columns=['Anomaly']))
+
+def apply_anomaly_detection_EllipticEnvelope(data, best_model):
+    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
 
-def apply_anomaly_detection_LocalOutlierFactor(data):
-    local_outlier_factor = LocalOutlierFactor(contamination=0.05)
-    data['Anomaly'] = local_outlier_factor.fit_predict(data.drop(columns=['Anomaly']))
+def apply_anomaly_detection_LocalOutlierFactor(data, best_model):
+    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
 
-def apply_anomaly_detection_GaussianMixture(data):
-    gaussian_mixture = GaussianMixture(n_components=2, covariance_type='full', max_iter=100)
-    data['Anomaly'] = gaussian_mixture.fit_predict(data.drop(columns=['Anomaly']))
+def apply_anomaly_detection_GaussianMixture(data, best_model):
+    data['Anomaly'] = best_model.fit_predict(data.drop(columns=['Anomaly']))
     # Mapping -1 to 1 for anomalies and 0 to inliers
     data['Anomaly'] = data['Anomaly'].map({-1: 1, 1: 0})
     return data
