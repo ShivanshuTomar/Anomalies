@@ -11,7 +11,8 @@ from sklearn.model_selection import GridSearchCV
 import seaborn as sns
 import statsmodels.api as sm
 import plotly.express as px
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt\
+import plotly.io as pio
 
 def drop_features_with_missing_values(data):
     threshold = 0.1
@@ -325,12 +326,15 @@ def main():
                 time.sleep(3)
             st.success('Done!')
 
-            st.download_button(
-                label=f"Download Plot ({selected_anomalyAlgorithm} - HTML)",
-                data=plotly.offline.plot(fig, include_plotlyjs=True, output_type='div'),
-                file_name=f"{selected_anomalyAlgorithm}Anomaly.html",
-                mime="text/html"
-            )
+
+
+        st.download_button(
+            label=f"Download Plot ({selected_anomalyAlgorithm} - HTML)",
+            data=pio.to_html(fig, full_html=False),
+            file_name=f"{selected_anomalyAlgorithm}Anomaly.html",
+            mime="text/html"
+        )
+
 
         # ... (other options for visualization)
 
