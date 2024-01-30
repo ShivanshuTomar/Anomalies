@@ -205,7 +205,7 @@ def main():
             data_with_anomalies = apply_anomaly_detection_GaussianMixture(data, best_model)
 
 
-        original_data_with_anomalies = pd.concat([copy_data, data_with_anomalies.rename('Anomaly')], axis=1)
+        original_data_with_anomalies = pd.concat([copy_data, data_with_anomalies], axis=1)
         original_data_with_anomalies['PointColor'] = 'Inlier'
         original_data_with_anomalies.loc[original_data_with_anomalies['Anomaly'] == 1, 'PointColor'] = 'Outlier'
 
