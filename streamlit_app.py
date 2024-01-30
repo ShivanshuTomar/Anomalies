@@ -219,7 +219,10 @@ def main():
         st.write(f"Columns present in subset: {[col for col in subset_columns if col in data_with_anomalies.columns]}")
 
         # Concatenation
-        final_data = pd.concat([copy_data, data_with_anomalies[subset_columns].copy()], axis=1)
+        # Concatenation
+        common_columns = set(copy_data.columns) & set(data_with_anomalies.columns)
+        final_data = pd.concat([copy_data[common_columns], data_with_anomalies[subset_columns].copy()], axis=1)
+
 
         st.write(final_data.head(5))
 
