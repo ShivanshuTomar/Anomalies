@@ -1,7 +1,7 @@
 streamlit
 scikit-learn
 seaborn
-statsmodels.api 
+statsmodels
 plotly.express
-matplotlib.pyplot
+matplotlib
 
