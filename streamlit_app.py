@@ -8,6 +8,7 @@ from sklearn.covariance import EllipticEnvelope
 from sklearn.neighbors import LocalOutlierFactor
 from sklearn.mixture import GaussianMixture
 from sklearn.model_selection import GridSearchCV
+from sklearn.impute import SimpleImputer
 import seaborn as sns
 import statsmodels.api as sm
 import plotly.express as px
@@ -147,6 +148,11 @@ def main():
         # Preprocessing steps
         st.write("Dealing with missing values:")
         data = drop_features_with_missing_values(data)
+        
+        # Impute missing values
+        imputer = SimpleImputer(strategy='mean')  # You can use other strategies like 'median', 'most_frequent', etc.
+        data_imputed = pd.DataFrame(imputer.fit_transform(data), columns=data.columns)
+
 
         st.write("Dealing with duplicate values...")
         num_duplicates = data.duplicated().sum()
