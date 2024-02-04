@@ -282,6 +282,11 @@ def main():
         elif selected_option == "2D ScatterPlot":
             selected_x_col = st.selectbox("Select X-axis column", data.columns)
             selected_y_col = st.selectbox("Select Y-axis column", data.columns)
+            if 'Anomaly' in data_with_anomalies.columns:
+                # Update 'PointColor' based on anomaly labels
+                data_with_anomalies['PointColor'] = 'Inlier'
+                data_with_anomalies.loc[data_with_anomalies['Anomaly'] == -1, 'PointColor'] = 'Outlier'
+            
             fig = px.scatter(
                 data_with_anomalies,
                 x=selected_x_col,
