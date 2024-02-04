@@ -150,7 +150,7 @@ def main():
         data = drop_features_with_missing_values(data)
         
         # Impute missing values
-        imputer = SimpleImputer(strategy='mean')  # You can use other strategies like 'median', 'most_frequent', etc.
+        imputer = SimpleImputer(strategy='median')  # You can use other strategies like 'median', 'most_frequent', etc.
         data_imputed = pd.DataFrame(imputer.fit_transform(data), columns=data.columns)
 
 
