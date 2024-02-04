@@ -284,8 +284,8 @@ def main():
             selected_y_col = st.selectbox("Select Y-axis column", data.columns)
             if 'Anomaly' in data_with_anomalies.columns:
                 # Update 'PointColor' based on anomaly labels
-                data_with_anomalies['PointColor'] = 'Inlier'
-                data_with_anomalies.loc[data_with_anomalies['Anomaly'] == -1, 'PointColor'] = 'Outlier'
+                original_data_with_anomalies['PointColor'] = 'Inlier'
+                original_data_with_anomalies.loc[data_with_anomalies['Anomaly'] == -1, 'PointColor'] = 'Outlier'
             
             fig = px.scatter(
                 data_with_anomalies,
