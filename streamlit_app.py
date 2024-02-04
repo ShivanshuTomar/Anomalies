@@ -136,7 +136,7 @@ def main():
     if data_file is not None:
         file_extension = data_file.name.split(".")[-1]
         if file_extension == "csv":
-            data = pd.read_csv(data_file, encoding='ISO-8859-1')
+            data = pd.read_csv(data_file, encoding='ISO-8859-1', low_memory='False')
         elif file_extension in ["xlsx", "XLSX"]:
             data = pd.read_excel(data_file)
         else:
